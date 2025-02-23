@@ -5,7 +5,10 @@ import { io } from "socket.io-client";
 import { useParams } from "next/navigation";
 import { Mic } from "lucide-react"; // Import Mic icon
 
-const socket = io("https://safetyfyapp.onrender.com", { transports: ["websocket"] });
+const socket = io("https://safetyfyapp.onrender.com", {
+  transports: ["websocket"],
+  secure: true
+});
 
 const HelpRequester = () => {
   const [loction, setLoction] = useState({ latitude: null, longitude: null });

@@ -10,7 +10,10 @@ import axios from "axios";
 
 
 // Initialize socket connection once
-const socket = io("http://10.20.11.23:5000", { transports: ["websocket"] });
+const socket = io("https://safetyfyapp.onrender.com", {
+  transports: ["websocket"],
+  secure: true
+});
 
 // Custom Marker Icon
 const customIcon = L.icon({
@@ -30,7 +33,7 @@ const RequiredHelpPage = () => {
   const queue = useRef([]); // Buffer queue to prevent `updating` errors
   useEffect(()=>{
     async function getdata() {
-      const response = await axios.get("http://10.20.11.23:5000/api/user/data",{withCredentials:true});
+      const response = await axios.get("https://safetyfyapp.onrender.com/api/user/data",{withCredentials:true});
       setName(response.data.name);
       console.log(response);
       
