@@ -56,7 +56,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="z-index:1000 w-full bg-white shadow-md fixed top-0 z-50 right-0">
+    <nav className="w-full bg-white shadow-md fixed top-0 z-50 right-0">
       <div className="max-w-[1280px] mx-auto flex justify-between items-center p-4 sm:px-8 w-full">
         <Link href="/">
           <img
@@ -66,8 +66,8 @@ const Navbar = () => {
           />
         </Link>
 
-        <div className="flex">
-          <ul className="hidden mr-20 md:flex items-center gap-6 text-gray-800 font-large">
+        <div className="flex items-center">
+          <ul className="hidden md:flex items-center gap-6 text-gray-800 font-large">
             <li className="hover:text-blue-600 transition-all">
               <Link href="/">Home</Link>
             </li>
@@ -84,10 +84,10 @@ const Navbar = () => {
               {servicesOpen && (
                 <ul className="absolute left-0 mt-2 bg-white shadow-lg rounded-lg w-56 overflow-hidden">
                   <li className="px-4 py-2 hover:bg-gray-100">
-                    <Link href="/excel">Female Sefty</Link>
+                    <Link href="/excel">Female Safety</Link>
                   </li>
                   <li className="px-4 py-2 hover:bg-gray-100">
-                    <Link href="/data-management">Child Sefty</Link>
+                    <Link href="/data-management">Child Safety</Link>
                   </li>
                   <li className="px-4 py-2 hover:bg-gray-100">
                     <Link href="/dashboard">Dashboard</Link>
@@ -99,62 +99,56 @@ const Navbar = () => {
               <Link href="/contact">Contact</Link>
             </li>
           </ul>
-          {isLoggedIn ? (
-            <div className="relative">
-              <User
-                className="text-gray-800 mt-2 mb-2 cursor-pointer"
-                size={30}
-                onClick={() => setShowProfilePopup(!showProfilePopup)}
-              />
 
-              {showProfilePopup && userData && (
-                <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg p-4 z-50">
-                  <p className="text-lg font-semibold">{userData.name}</p>
-                  <p className="text-sm text-gray-600">{userData.email}</p>
-                  <p className="text-sm text-gray-600">{userData.userId}</p>
-                  <button
-                    onClick={logoutUser}
-                    className="text-sm mt-3 text-gray-800 hover:text-red-500 transition duration-200 cursor-pointer font-medium"
-                  >
-                    Logout
-                  </button>
-
-                  {userData.isEmailVerified ? (
-                    <p className="text-green-600 font-medium mt-2">
-                      Verified ✅
-                    </p>
-                  ) : (
-                    <button
-                      onClick={verifyEmail}
-                      className="mt-2 ml-5 text-blue-600 font-medium hover:underline"
-                    >
-                      Verify Email
-                    </button>
-                  )}
-                  <button
-                    onClick={() => router.push("/add-details")}
-                    className="w-full py-1 mt-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg hover:scale-105 transition-all"
-                  >
-                    Add Emergency Details
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
+          {/* Profile / Login Dropdown in Mobile */}
+          <div className="relative md:hidden">
             <button
-              onClick={() => router.push("/login")}
-              className="border border-gray-500 rounded-full px-10 py-1 text-gray-800 hover:bg-gray-100 transition-all"
+              className="flex items-center"
+              onClick={() => setMenuOpen(!menuOpen)}
             >
-              Login
+              {menuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
-          )}
-
-          <button
-            className="md:hidden flex items-center"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-4">
+                {isLoggedIn ? (
+                  <div>
+                    <p className="text-lg font-semibold">{userData.name}</p>
+                    <p className="text-sm text-gray-600">{userData.email}</p>
+                    <p className="text-sm text-gray-600">{userData.userId}</p>
+                    <button
+                      onClick={logoutUser}
+                      className="text-sm mt-3 text-gray-800 hover:text-red-500 transition duration-200 cursor-pointer font-medium"
+                    >
+                      Logout
+                    </button>
+                    {userData.isEmailVerified ? (
+                      <p className="text-green-600 font-medium mt-2">Verified ✅</p>
+                    ) : (
+                      <button
+                        onClick={verifyEmail}
+                        className="mt-2 text-blue-600 font-medium hover:underline"
+                      >
+                        Verify Email
+                      </button>
+                    )}
+                    <button
+                      onClick={() => router.push("/add-details")}
+                      className="w-full py-1 mt-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg hover:scale-105 transition-all"
+                    >
+                      Add Emergency Details
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => router.push("/login")}
+                    className="border border-gray-500 rounded-full px-10 py-1 text-gray-800 hover:bg-gray-100 transition-all w-full"
+                  >
+                    Login
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </nav>
