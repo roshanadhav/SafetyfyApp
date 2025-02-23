@@ -1,19 +1,20 @@
 "use client"; // Required for using useEffect & useState in Next.js App Router
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { useParams } from "next/navigation";
 import { io } from "socket.io-client";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
 import axios from "axios";
 
+// Initialize socket connection once
 const socket = io("https://safetyfyapp.onrender.com", {
   transports: ["websocket"],
-  secure: true
+  secure: true,
 });
 
+// Custom Marker Icon
 const customIcon = L.icon({
   iconUrl: "https://i.postimg.cc/vTqHtDBV/663342-removebg-preview.png",
   iconSize: [32, 32],
@@ -22,46 +23,42 @@ const customIcon = L.icon({
 });
 
 const RequiredHelpPage = () => {
-  const { id } = useParams(); // Get the 'id' from the URL
+  const { id } = useParams();
   const [location, setLocation] = useState(null);
   const [name, setName] = useState("");
-  
   const audioRef = useRef(null);
   const mediaSource = useRef(null);
   const sourceBuffer = useRef(null);
   const queue = useRef([]);
 
   useEffect(() => {
-    const audioElement = audioRef.current;
-    if (!audioElement) return;
-
-    mediaSource.current = new MediaSource(); // Reinitialize
-    audioElement.src = URL.createObjectURL(mediaSource.current);
-
-    mediaSource.current.addEventListener("sourceopen", () => {
-      console.log("MediaSource opened");
-
-      try {
-        sourceBuffer.current = mediaSource.current.addSourceBuffer("audio/webm; codecs=opus");
-
-        sourceBuffer.current.addEventListener("updateend", () => {
-          if (queue.current.length > 0 && !sourceBuffer.current.updating) {
-            sourceBuffer.current.appendBuffer(queue.current.shift());
-          }
-        });
-      } catch (error) {
-        console.error("Error adding SourceBuffer:", error);
-      }
-    });
-
-    mediaSource.current.addEventListener("sourceclose", () => {
-      console.warn("MediaSource closed. Reinitializing...");
+    const initializeMediaSource = () => {
       mediaSource.current = new MediaSource();
-      sourceBuffer.current = null;
-    });
+      audioRef.current.src = URL.createObjectURL(mediaSource.current);
+
+      mediaSource.current.addEventListener("sourceopen", () => {
+        try {
+          sourceBuffer.current = mediaSource.current.addSourceBuffer("audio/webm; codecs=opus");
+          sourceBuffer.current.addEventListener("updateend", () => {
+            if (queue.current.length > 0 && !sourceBuffer.current.updating) {
+              sourceBuffer.current.appendBuffer(queue.current.shift());
+            }
+          });
+        } catch (error) {
+          console.error("Error adding SourceBuffer:", error);
+        }
+      });
+
+      mediaSource.current.addEventListener("sourceclose", () => {
+        console.warn("MediaSource closed. Reinitializing...");
+        initializeMediaSource();
+      });
+    };
+
+    initializeMediaSource();
 
     const handleAudioStream = (audioChunk) => {
-      if (!sourceBuffer.current || mediaSource.current.readyState !== "open") return;
+      if (!sourceBuffer.current) return;
 
       const audioBlob = new Blob([audioChunk], { type: "audio/webm" });
       const reader = new FileReader();
@@ -73,6 +70,7 @@ const RequiredHelpPage = () => {
             sourceBuffer.current.appendBuffer(new Uint8Array(arrayBuffer));
           } catch (error) {
             console.error("Error appending buffer:", error);
+            initializeMediaSource();
           }
         } else {
           queue.current.push(new Uint8Array(arrayBuffer));
@@ -86,11 +84,16 @@ const RequiredHelpPage = () => {
 
     return () => {
       socket.off("audio-stream", handleAudioStream);
+      if (mediaSource.current) {
+        mediaSource.current.removeEventListener("sourceopen", initializeMediaSource);
+        mediaSource.current.removeEventListener("sourceclose", initializeMediaSource);
+      }
     };
   }, []);
 
   useEffect(() => {
     if (!id) return;
+
     socket.emit("joinRoom", id);
     console.log(`Joined room: ${id}`);
 
