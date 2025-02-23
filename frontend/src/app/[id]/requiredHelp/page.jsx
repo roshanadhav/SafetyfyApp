@@ -31,15 +31,6 @@ const RequiredHelpPage = () => {
   const sourceBuffer = useRef(null);
   const [name,setName] = useState("")
   const queue = useRef([]); // Buffer queue to prevent `updating` errors
-  useEffect(()=>{
-    async function getdata() {
-      const response = await axios.get("https://safetyfyapp.onrender.com/api/user/data",{withCredentials:true});
-      setName(response.data.name);
-      console.log(response);
-      
-    }
-    getdata();
-  },[])
   useEffect(() => {
     const audioElement = audioRef.current;
     if (!audioElement) return;
