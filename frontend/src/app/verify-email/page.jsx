@@ -30,7 +30,7 @@ const EmailVerify = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post(`https://safetyfyapp.onrender.com/api/auth/verify-account`, { email, otp: otpCode });
+      const response = await axios.post(`https://safetyfyapp.onrender.com/api/auth/verify-account`, { email, otp: otpCode } , {withCredentials:true});
 
       if (response.data.success) {
         toast.success("Email verified successfully! 🎉");
