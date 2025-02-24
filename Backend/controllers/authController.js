@@ -67,7 +67,7 @@ export const  register = async (req  , res ) =>{
             return res.json({success : true , message : 'user signup Successfully'})
 
         } catch (error) {
-            res.json({success : false , mmessage : error.message})
+            res.json({success : false , message : error.message})
         }
 }
 
@@ -203,7 +203,7 @@ export const verifyEmail  = async (req , res )=>{
             return res.json({success : false , message : 'OTP Expired'}) ; 
         }
 
-        user.isveriFied = true ; 
+        user.isVerified = true ; 
         user.verifyEmail = '' ; 
         user.verifyOtpExpireAt = 0 ; 
 
