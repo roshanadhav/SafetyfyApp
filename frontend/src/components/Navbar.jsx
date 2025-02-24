@@ -111,15 +111,27 @@ const Navbar = () => {
               />
               {showProfilePopup && userData && (
                 <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg p-4 z-50">
-                  <p className="text-lg font-semibold">{userData.name}</p>
-                  <p className="text-sm text-gray-600">{userData.email}</p>
-                  <button
-                    onClick={logoutUser}
-                    className="text-sm mt-3 text-gray-800 hover:text-red-500 transition duration-200 cursor-pointer font-medium"
+                <p className="text-lg font-semibold">{userData.name}</p>
+                <p className="text-sm text-gray-600">{userData.email}</p>
+                
+                {userData && !userData.isEmailVerified ? (
+                  <a
+                    href="/verify-email"
+                    className="text-blue-600 hover:text-blue-800 font-medium transition duration-200 underline mt-2 inline-block"
                   >
-                    Logout
-                  </button>
-                </div>
+                    Verify Email
+                  </a>
+                ) : (
+                  <span className="text-green-600 font-medium">Verified</span>
+                )}
+              
+                <button
+                  onClick={logoutUser}
+                  className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition mt-4"
+                >
+                  Logout
+                </button>
+              </div>
               )}
             </div>
           ) : (
