@@ -1,12 +1,14 @@
 "use client";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { AppContext } from "../context/AppContext";
+import {useContext} from 'react'
 
 const HomePage = () => {
   const router = useRouter();
+  const { userData } = useContext(AppContext);
 
   return (
-    <div className="w-full h-screen flex flex-col md:flex-row items-center justify-center bg-gray-100 p-6">
+    <div className="w-full h-screen mt-20  flex flex-col md:flex-row items-center justify-center bg-gray-100 p-6">
       {/* Left Section - Image */}
       <div className="flex items-center justify-center md:w-1/2 mb-6 md:mb-0">
         <img 
@@ -25,8 +27,8 @@ const HomePage = () => {
           We are committed to providing a safe and secure environment for women. Get instant help and resources to stay protected.
         </p>
         <button 
-          onClick={() => router.push("/get-help")}
-          className="px-10 py-4 text-white text-lg font-semibold rounded-full shadow-lg bg-gradient-to-r from-red-500 to-pink-600 hover:scale-105 transition-transform"
+          onClick={() => router.push(userData && userData.userId ? `/${userData.userId}/help`:"/login")}
+          className="px-10 mb-12 py-4 text-white text-lg font-semibold rounded-full shadow-lg bg-gradient-to-r from-red-500 to-pink-600 hover:scale-105 transition-transform"
         >
           Get Help Now
         </button>
