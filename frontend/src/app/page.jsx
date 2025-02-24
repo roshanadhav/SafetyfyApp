@@ -10,7 +10,7 @@ const HomePage = () => {
   return (
     <div className="w-full h-screen mt-20  flex flex-col md:flex-row items-center justify-center bg-gray-100 p-6">
       {/* Left Section - Image */}
-      <div className="flex items-center justify-center md:w-1/2 mb-6 md:mb-0">
+      <div className="flex  items-center justify-center md:w-1/2 mb-6 md:mb-0">
         <img 
           src="https://i.pinimg.com/736x/30/ef/45/30ef456469fc622141a487d2f4ac6e87.jpg" 
           alt="Women's Safety Assistance" 
