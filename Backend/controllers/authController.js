@@ -203,7 +203,7 @@ export const verifyEmail  = async (req , res )=>{
             return res.json({success : false , message : 'OTP Expired'}) ; 
         }
 
-        user.isVerified = true ; 
+        user.isveriFied = true ; 
         user.verifyEmail = '' ; 
         user.verifyOtpExpireAt = 0 ; 
 

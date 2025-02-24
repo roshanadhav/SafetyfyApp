@@ -35,7 +35,7 @@ export const AppContextProvider = ({ children }) => {
                     userId : data.id ,
                     name: data.name,
                     email: data.email,
-                    isEmailVerified: data.isVerified, // Fixed typo: `isveriFied` -> `isVerified`
+                    isEmailVerified: data.isveriFied, // Fixed typo: `isveriFied` -> `isVerified`
                 };
                 setUserData(user);
                 setIsLoggedIn(true);
