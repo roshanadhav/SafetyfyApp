@@ -116,6 +116,7 @@ const Navbar = () => {
                 
                 {userData && !userData.isEmailVerified ? (
                   <a
+                    onClick={verifyEmail}
                     href="/verify-email"
                     className="text-blue-600 hover:text-blue-800 font-medium transition duration-200 underline mt-2 inline-block"
                   >
