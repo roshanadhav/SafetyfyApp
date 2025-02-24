@@ -66,8 +66,9 @@ const Navbar = () => {
           />
         </Link>
 
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center gap-6 text-gray-800 font-large">
+        <div className="flex">
+          {/* Desktop Menu */}
+        <ul className="hidden mr-12 md:flex items-center gap-6 text-gray-800 font-large">
           <li className="hover:text-blue-600 transition-all">
             <Link href="/">Home</Link>
           </li>
@@ -84,7 +85,7 @@ const Navbar = () => {
             {servicesOpen && (
               <ul className="absolute left-0 mt-2 bg-white shadow-lg rounded-lg w-56 overflow-hidden">
                 <li className="px-4 py-2 hover:bg-gray-100">
-                  <Link href="/excel">Female Safety</Link>
+                  <Link href="/services/female-safety">Female Safety</Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100">
                   <Link href="/data-management">Child Safety</Link>
@@ -143,6 +144,7 @@ const Navbar = () => {
               Login
             </button>
           )}
+        </div>
         </div>
 
         {/* Mobile Menu */}
